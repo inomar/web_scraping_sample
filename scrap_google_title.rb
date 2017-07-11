@@ -1,3 +1,5 @@
+# nokogiriを使ってgoogleのtitleを取得するサンプル
+
 require 'open-uri'
 require 'nokogiri'
 
