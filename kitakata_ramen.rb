@@ -22,11 +22,7 @@ HOST = "https://ramendb.supleks.jp".freeze
 	end
 
 	def get_urls
-		urls =[]
-		(1..get_page_count.to_i).each do |i|
-			urls.push(get_url(i))
-		end
-		urls
+		urls = (1..get_page_count.to_i).map { |i| get_url(i) }
 	end
 
 	def get_page_count
@@ -38,7 +34,7 @@ HOST = "https://ramendb.supleks.jp".freeze
 			node = node.search('h4')
 			name = node.text
 			link = node.at('a')[:href]
-			ramens.push({ name: "#{name}", link: "#{link}"})
+			ramens.push({ name: "#{name}", link: "#{HOST}#{link}"})
 		end
 	end
 
