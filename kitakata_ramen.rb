@@ -12,8 +12,7 @@ HOST = "https://ramendb.supleks.jp".freeze
 	def initialize(prefecture, city)
 		@prefecture = prefecture
 		@city = city
-		mechanize = Mechanize.new
-		page = mechanize.get get_url
+		page = set_up get_url
 		@doc = Nokogiri::HTML(page.body)
 	end
 
@@ -48,7 +47,25 @@ HOST = "https://ramendb.supleks.jp".freeze
 		kitakata_ramen
 	end
 
+	def get_kitakata_ramen(kitakta_ramen)
+		page = set_up kitakta_ramen[:link]
+		d = Nokogiri::HTML(page.body)
+		d.xpath("//table[@id='data-table']").each do |node|
+			ramen = node.search("tr").map do |t|
+				{name: "#{t.at('th').text}", value: "#{t.at('td').text}"}
+			end
+			p ramen
+		end
+	end
+
+	def set_up(url)
+		mechanize = Mechanize.new
+		mechanize.get url
+	end
 end
 
 kitakata_ramen = ScrapKitakataRamen.new("fukushima", "喜多方市")
-puts kitakata_ramen.get_kitakata_ramens
+kitaktaramens = kitakata_ramen.get_kitakata_ramens
+kitaktaramens.each do |k|
+	kitakata_ramen.get_kitakata_ramen k
+end
