@@ -8,6 +8,6 @@ mechanize = Mechanize.new
 page = mechanize.get (HOST + target)
 html = Nokogiri::HTML(page.body)
 html = html.xpath("//div[@class='mw-category']/div[@class='mw-category-group']").map do |node|
-  node.search('a').text
+  node.search('a').text.split('小説')
 end
 puts html
